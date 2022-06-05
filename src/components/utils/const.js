@@ -1,0 +1,7 @@
+export const HOME_ROUTE = '/'
+export const BASKET_ROUTE = '/basket'
+export const WISHLIST_ROUTE = '/wishlist'
+export const AUTHORIZATION_ROUTE = '/entrance'
+export const REGISTER_ROUTE = '/register'
+export const BOOK_PREVIEW_ROUTE = '/book_preview'
+export const PROFILE_ROUTE = '/profile'

@@ -1,24 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
+import {Row,Button,Col, Alert, ThemeProvider, Container, Form, FormControl} from 'react-bootstrap';
+import { Dispatch, FC, useEffect, useState } from 'react';
+import Header from './components/header/Header';
+import { Route, Routes } from 'react-router-dom';
+import Home from './pages/home/Home';
+import { pageOptions, PublicRoutes } from './InitialValues';
 import './App.css';
 
-function App() {
+import Footer from './components/footer/Footer';
+
+import { useRoutes } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from './store/hooks';
+import { checkUsers, loginUsers } from './store/action-creators/user';
+import jwtDecode from 'jwt-decode';
+import { addUserOptions } from './store/reducer/userReducer';
+import AlertGlobalMessage from './components/alertMessage/AlertGlobalMessage';
+import { removeMessage } from './store/reducer/messageReducer';
+
+
+
+
+function App(){
+
+  const routes = useRoutes([...PublicRoutes])
+  const {message,type} = useAppSelector(state=>state.message)
+  const dispatch = useAppDispatch()
+ 
+  useEffect(()=>{
+      if(localStorage.getItem('userJwt')){
+        dispatch(checkUsers())
+      }
+  },[])
+
+  const removeWarning = ()=>{
+      dispatch(removeMessage())
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+        <Header/>
+            <div className="content">
+                {message && <AlertGlobalMessage description={message} type={type} setShow={removeWarning} /> }
+                    {routes}    
+                    
+            </div>
+       <Footer/> 
     </div>
   );
 }
